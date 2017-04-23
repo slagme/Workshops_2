@@ -6,35 +6,52 @@ class user extends activeRecord
     private $email;
     private $passwordHash;
 
-    public function __construct(){//3 parametry
+    public function __construct()
+    {
         parent::__construct();
         $this->email = '';
         $this->username = '';
-        $this->passwordHash = '';}
+        $this->passwordHash = '';
+    }
 
-    public function getId(){
-        return $this->id;}
+    public function getId()
+    {
+        return $this->id;
+    }
 
-    public function getUsername(){
-        return $this->username;}
+    public function getUsername()
+    {
+        return $this->username;
+    }
 
-    public function getEmail(){
-        return $this->email;}
+    public function getEmail()
+    {
+        return $this->email;
+    }
 
-    public function getPasswordHash(){
-        return $this->passwordHash;}
+    public function getPasswordHash()
+    {
+        return $this->passwordHash;
+    }
 
-    public function setUsername($username){
-        $this->username = $username;}
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
 
-    public function setEmail($email){
-        $this->email = $email;}
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
 
-    public function setPasswordHash($passwordHash){
-        $this->passwordHash = md5($passwordHash); }
+    public function setPasswordHash($passwordHash)
+    {
+        $this->passwordHash = md5($passwordHash);
+    }
 
-    public function save(){
-        if (self::$db->conn != null) {
+    public function save()
+    {
+        if (self::$db->conn != null){
             if ($this->id == -1) {
                 $sql = "INSERT INTO users (username, email, passwordHash) values ('$this->username', '$this->email', '$this->passwordHash')";
 
@@ -61,7 +78,8 @@ class user extends activeRecord
         return false;   
     }
 
-    static public function loadById($id){
+    static public function loadById($id)
+    {
         self::connect();
         $sql = "SELECT * FROM users WHERE id=:id";
         $stmt=self::$db->conn->prepare($sql);
@@ -79,7 +97,8 @@ class user extends activeRecord
         
     }
 
-    static public function loadByEmail($email){
+    static public function loadByEmail($email)
+    {
         self::connect();
         $sql = "SELECT * FROM users WHERE email=:email";
         $stmt=self::$db->conn->prepare($sql);
@@ -96,7 +115,8 @@ class user extends activeRecord
         return null;    
         }
         
-        static public function loadByUsername($username){
+        static public function loadByUsername($username)
+        {
         self::connect();
         $sql = "SELECT * FROM users WHERE username=:username";
         $stmt=self::$db->conn->prepare($sql);
@@ -113,7 +133,8 @@ class user extends activeRecord
         return null;    
         }
         
-        static public function loadAll(){
+        static public function loadAll()
+        {
             self::connect();
             $sql="SELECT * FROM users";
             $returnTable=[];
@@ -130,7 +151,8 @@ class user extends activeRecord
             return $returnTable;
         }
 
-    public function delete(){
+    public function delete()
+    {
         if($this->id != -1){//jeśli nie jest użytkownikiem tymczasowym
             if(self::$db->conn->query("DELETE FROM Users WHERE id=$this->id")){//usuń jeżeli nie jest id -1;
                 $this->id = -1;
@@ -142,18 +164,17 @@ class user extends activeRecord
     }
 }    
 
-$obj1 = new User();
+$obj1 = new user();
 $obj1->setUsername('Janusz z Obornik '.rand(0,9));
 $obj1->setEmail('janusz14'.rand(0,9).'@wp.pl');
 $obj1->setpasswordHash('1234'.rand(0,9));
-$obj1->saveToDb();
+$obj1->save();
 
 //$obj1 = user::loadUserById(4);
 //$obj1->setUsername('Andrzej');
 // $obj1->saveToDb();
 // $obj1->delete();
 
-User::connect();
-var_dump(User::loadAll);
+
 
 ?>
